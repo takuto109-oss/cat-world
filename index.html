@@ -19,9 +19,16 @@
                 </div>
                 <ul class="nav-menu">
                     <li><a href="#home">ホーム</a></li>
-                    <li><a href="#features">特徴</a></li>
+                    <li><a href="#cats-database">猫データベース</a></li>
+                    <li><a href="#articles">記事</a></li>
+                    <li><a href="#products">グッズ</a></li>
+                    <li><a href="#services">サービス</a></li>
                     <li><a href="#about">About</a></li>
                     <li><a href="#contact">お問い合わせ</a></li>
+                    <li class="auth-buttons">
+                        <a href="#" class="login-btn">ログイン</a>
+                        <a href="#" class="signup-btn">会員登録</a>
+                    </li>
                 </ul>
                 <div class="hamburger">
                     <span></span>
@@ -73,6 +80,121 @@
                         </div>
                         <div class="glow-effect"></div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 検索セクション -->
+    <section class="search-section">
+        <div class="container">
+            <div class="search-container">
+                <h2>猫の情報を検索</h2>
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="品種、年齢、特徴で検索...">
+                    <button class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <div class="search-filters">
+                    <div class="filter-group">
+                        <label>品種</label>
+                        <select id="breed-filter">
+                            <option value="">すべて</option>
+                            <option value="ペルシャ">ペルシャ</option>
+                            <option value="メインクーン">メインクーン</option>
+                            <option value="スコティッシュフォールド">スコティッシュフォールド</option>
+                            <option value="ロシアンブルー">ロシアンブルー</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>年齢</label>
+                        <select id="age-filter">
+                            <option value="">すべて</option>
+                            <option value="子猫">子猫 (0-1歳)</option>
+                            <option value="若猫">若猫 (1-3歳)</option>
+                            <option value="成猫">成猫 (3-7歳)</option>
+                            <option value="シニア">シニア (7歳以上)</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>サイズ</label>
+                        <select id="size-filter">
+                            <option value="">すべて</option>
+                            <option value="小型">小型</option>
+                            <option value="中型">中型</option>
+                            <option value="大型">大型</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 猫データベースセクション -->
+    <section id="cats-database" class="cats-database">
+        <div class="container">
+            <h2>猫の品種データベース</h2>
+            <div class="cats-grid" id="cats-grid">
+                <!-- データはJavaScriptで動的に追加 -->
+            </div>
+            <div class="load-more-container">
+                <button class="btn-primary load-more-btn">もっと表示</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 記事セクション -->
+    <section id="articles" class="articles-section">
+        <div class="container">
+            <h2>最新記事</h2>
+            <div class="articles-grid" id="articles-grid">
+                <!-- 記事はJavaScriptで動的に追加 -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 製品セクション -->
+    <section id="products" class="products-section">
+        <div class="container">
+            <h2>おすすめグッズ</h2>
+            <div class="products-grid" id="products-grid">
+                <!-- 製品はJavaScriptで動的に追加 -->
+            </div>
+        </div>
+    </section>
+
+    <!-- サービスセクション -->
+    <section id="services" class="services-section">
+        <div class="container">
+            <h2>サービス一覧</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h3>オンライン相談</h3>
+                    <p>经験豊富な獣医師によるオンライン相談サービス</p>
+                    <div class="service-price">￥1,500/30分</div>
+                    <button class="btn-primary service-book-btn" data-service="consultation">予約する</button>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-scissors"></i>
+                    </div>
+                    <h3>グルーミング</h3>
+                    <p>プロのトリマーによる本格グルーミングサービス</p>
+                    <div class="service-price">￥5,000～</div>
+                    <button class="btn-primary service-book-btn" data-service="grooming">予約する</button>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h3>ペットシッター</h3>
+                    <p>信頼できるペットシッターがあなたの大切な猫をお世話</p>
+                    <div class="service-price">￥3,000/日</div>
+                    <button class="btn-primary service-book-btn" data-service="sitting">予約する</button>
                 </div>
             </div>
         </div>
@@ -291,6 +413,156 @@
         </div>
     </footer>
 
+    <!-- モーダルウィンドウ -->
+    <!-- ログインモーダル -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>ログイン</h2>
+            <form class="auth-form" id="login-form">
+                <div class="form-group">
+                    <input type="email" placeholder="メールアドレス" required>
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="パスワード" required>
+                    <i class="fas fa-lock"></i>
+                </div>
+                <button type="submit" class="btn-primary auth-submit">ログイン</button>
+                <div class="auth-links">
+                    <a href="#">パスワードを忘れた方</a>
+                    <a href="#" class="switch-to-signup">会員登録はこちら</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 会員登録モーダル -->
+    <div id="signup-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>会員登録</h2>
+            <form class="auth-form" id="signup-form">
+                <div class="form-group">
+                    <input type="text" placeholder="お名前" required>
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="メールアドレス" required>
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="パスワード" required>
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="パスワード再入力" required>
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms">利用規約に同意します</label>
+                </div>
+                <button type="submit" class="btn-primary auth-submit">会員登録</button>
+                <div class="auth-links">
+                    <a href="#" class="switch-to-login">すでにアカウントをお持ちの方</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 予約モーダル -->
+    <div id="booking-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>サービス予約</h2>
+            <form class="booking-form" id="booking-form">
+                <div class="form-group">
+                    <label>サービス種類</label>
+                    <select id="service-type" required>
+                        <option value="">選択してください</option>
+                        <option value="consultation">オンライン相談</option>
+                        <option value="grooming">グルーミング</option>
+                        <option value="sitting">ペットシッター</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>希望日時</label>
+                    <input type="datetime-local" required>
+                </div>
+                <div class="form-group">
+                    <label>猫の情報</label>
+                    <textarea placeholder="猫の名前、年齢、品種、特記事項など" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>お名前</label>
+                    <input type="text" required>
+                </div>
+                <div class="form-group">
+                    <label>電話番号</label>
+                    <input type="tel" required>
+                </div>
+                <button type="submit" class="btn-primary">予約する</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- マイページモーダル -->
+    <div id="mypage-modal" class="modal">
+        <div class="modal-content wide">
+            <span class="close">&times;</span>
+            <h2>マイページ</h2>
+            <div class="mypage-tabs">
+                <button class="tab-btn active" data-tab="profile">プロフィール</button>
+                <button class="tab-btn" data-tab="favorites">お気に入り</button>
+                <button class="tab-btn" data-tab="bookings">予約履歴</button>
+            </div>
+            <div class="tab-content">
+                <div id="profile-tab" class="tab-pane active">
+                    <h3>プロフィール情報</h3>
+                    <div class="profile-info">
+                        <p>お名前: 田中 太郎</p>
+                        <p>メール: tanaka@example.com</p>
+                        <p>登録日: 2024/01/15</p>
+                    </div>
+                </div>
+                <div id="favorites-tab" class="tab-pane">
+                    <h3>お気に入りの猫</h3>
+                    <div class="favorites-grid" id="favorites-grid">
+                        <!-- お気に入りはJavaScriptで追加 -->
+                    </div>
+                </div>
+                <div id="bookings-tab" class="tab-pane">
+                    <h3>予約履歴</h3>
+                    <div class="bookings-list" id="bookings-list">
+                        <!-- 予約履歴はJavaScriptで追加 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 言語切り替え -->
+    <div class="language-selector">
+        <button class="lang-btn active" data-lang="ja">日本語</button>
+        <button class="lang-btn" data-lang="en">English</button>
+        <button class="lang-btn" data-lang="ko">한국어</button>
+    </div>
+
+    <!-- フローティングアクションボタン -->
+    <div class="floating-actions">
+        <button class="fab search-fab" title="検索">
+            <i class="fas fa-search"></i>
+        </button>
+        <button class="fab favorites-fab" title="お気に入り">
+            <i class="fas fa-heart"></i>
+        </button>
+        <button class="fab chat-fab" title="チャット">
+            <i class="fas fa-comments"></i>
+        </button>
+    </div>
+
+    <script src="database.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

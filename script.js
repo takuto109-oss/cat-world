@@ -19,7 +19,7 @@ class CatWebsiteController {
         // Initialize advanced features
         this.setupCustomCursor();
         this.setupMagneticButtons();
-        this.setupParticleSystem();
+        // this.setupParticleSystem(); // プレースホルダー
     }
 
     setupEventListeners() {
