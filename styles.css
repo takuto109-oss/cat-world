@@ -2774,3 +2774,410 @@ footer::before {
         -moz-osx-font-smoothing: grayscale;
     }
 }
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal.show {
+    opacity: 1;
+}
+
+.modal-content {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    transform: translateY(50px);
+    transition: transform 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark-mode .modal-content {
+    background: rgba(30, 41, 59, 0.95);
+    color: #e2e8f0;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.modal.show .modal-content {
+    transform: translateY(0);
+}
+
+.modal-content.wide {
+    max-width: 800px;
+}
+
+.modal .close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #94a3b8;
+    transition: color 0.3s ease;
+}
+
+.modal .close:hover {
+    color: #64748b;
+}
+
+/* Form Styles */
+.auth-form .form-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.auth-form input, .auth-form select, .auth-form textarea {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.8);
+    color: #1e293b;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.dark-mode .auth-form input, 
+.dark-mode .auth-form select, 
+.dark-mode .auth-form textarea {
+    background: rgba(30, 41, 59, 0.8);
+    border-color: #475569;
+    color: #e2e8f0;
+}
+
+.auth-form input:focus, .auth-form select:focus, .auth-form textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(103, 126, 234, 0.1);
+}
+
+.auth-form .form-group i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 1.1rem;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: auto;
+    padding: 0;
+    margin: 0;
+}
+
+.auth-submit {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    margin-top: 1rem;
+}
+
+.auth-links {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.auth-links a {
+    color: #667eea;
+    text-decoration: none;
+    display: block;
+    margin: 0.5rem 0;
+    transition: color 0.3s ease;
+}
+
+.auth-links a:hover {
+    color: #764ba2;
+}
+
+/* Tab Styles */
+.mypage-tabs {
+    display: flex;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.dark-mode .mypage-tabs {
+    border-color: #475569;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 1rem;
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.tab-btn.active {
+    color: #667eea;
+    border-bottom-color: #667eea;
+}
+
+.tab-content {
+    min-height: 300px;
+}
+
+.tab-pane {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+/* Card Styles */
+.cat-card, .article-card, .product-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark-mode .cat-card, 
+.dark-mode .article-card, 
+.dark-mode .product-card {
+    background: rgba(30, 41, 59, 0.9);
+    color: #e2e8f0;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.cat-card:hover, .article-card:hover, .product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-medium);
+}
+
+.cat-image, .article-image, .product-image {
+    position: relative;
+    height: 200px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+}
+
+.cat-emoji, .article-emoji, .product-emoji {
+    font-size: 4rem;
+    filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
+}
+
+.favorite-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #94a3b8;
+    backdrop-filter: blur(10px);
+}
+
+.favorite-btn:hover, .favorite-btn.active {
+    background: #ef4444;
+    color: white;
+    transform: scale(1.1);
+}
+
+.featured-badge, .discount-badge, .stock-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #06d6a0;
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+}
+
+.stock-badge.out-of-stock {
+    background: #ef4444;
+}
+
+.discount-badge {
+    background: #f59e0b;
+}
+
+.cat-info, .article-content, .product-info {
+    padding: 1.5rem;
+}
+
+.cat-info h3, .article-content h3, .product-info h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.3rem;
+    color: #1e293b;
+    font-weight: 600;
+}
+
+.dark-mode .cat-info h3, 
+.dark-mode .article-content h3, 
+.dark-mode .product-info h3 {
+    color: #e2e8f0;
+}
+
+.cat-breed, .article-category, .product-brand {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.cat-details {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+.cat-temperament, .product-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.trait-tag, .feature-tag {
+    background: rgba(103, 126, 234, 0.1);
+    color: #667eea;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+}
+
+.cat-description {
+    color: #64748b;
+    margin: 1rem 0;
+    line-height: 1.6;
+}
+
+.dark-mode .cat-description {
+    color: #94a3b8;
+}
+
+.cat-price, .product-price {
+    font-weight: 600;
+    color: #06d6a0;
+    font-size: 1.1rem;
+}
+
+.product-price {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+.product-rating {
+    color: #f59e0b;
+    margin: 0.5rem 0;
+    font-size: 1rem;
+}
+
+.rating-text {
+    color: #64748b;
+    font-size: 0.9rem;
+    margin-left: 0.5rem;
+}
+
+.add-to-cart {
+    width: 100%;
+    margin-top: 1rem;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border: none;
+    color: white;
+    padding: 0.8rem;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.add-to-cart:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(103, 126, 234, 0.3);
+}
+
+/* Grid layouts */
+.cats-grid, .articles-grid, .products-grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    margin-top: 2rem;
+}
+
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #94a3b8;
+    padding: 3rem;
+    font-size: 1.1rem;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius-lg);
+}
+
+.dark-mode .no-results {
+    background: rgba(30, 41, 59, 0.5);
+}

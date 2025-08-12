@@ -35,6 +35,24 @@ class CatWebsiteController {
             }
         });
 
+        // Auth buttons
+        this.setupAuthButtons();
+        
+        // Service booking buttons
+        this.setupServiceButtons();
+        
+        // Cat and article cards
+        this.setupCardClicks();
+        
+        // Search functionality
+        this.setupSearchFunctionality();
+        
+        // Language switching
+        this.setupLanguageSwitching();
+        
+        // My page tabs
+        this.setupMyPageTabs();
+
         // Scroll events with throttling
         let scrollTimeout;
         window.addEventListener('scroll', () => {
@@ -746,6 +764,651 @@ class CatWebsiteController {
                 icon.style.borderRadius = '50%';
             });
         });
+    }
+
+    // 認証ボタンの設定
+    setupAuthButtons() {
+        // ログインボタン
+        document.querySelectorAll('.login-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.openModal('login-modal');
+            });
+        });
+
+        // 会員登録ボタン
+        document.querySelectorAll('.signup-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.openModal('signup-modal');
+            });
+        });
+
+        // モーダル切り替え
+        document.querySelectorAll('.switch-to-signup').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.closeModal('login-modal');
+                this.openModal('signup-modal');
+            });
+        });
+
+        document.querySelectorAll('.switch-to-login').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.closeModal('signup-modal');
+                this.openModal('login-modal');
+            });
+        });
+
+        // モーダル閉じる
+        document.querySelectorAll('.modal .close').forEach(btn => {
+            btn.addEventListener('click', () => {
+                this.closeAllModals();
+            });
+        });
+
+        // モーダル背景クリックで閉じる
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    this.closeAllModals();
+                }
+            });
+        });
+
+        // 認証フォーム送信
+        this.setupAuthForms();
+    }
+
+    // サービス予約ボタンの設定
+    setupServiceButtons() {
+        document.querySelectorAll('.service-book-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const serviceType = btn.getAttribute('data-service');
+                this.openBookingModal(serviceType);
+            });
+        });
+
+        // 予約フォーム送信
+        const bookingForm = document.getElementById('booking-form');
+        if (bookingForm) {
+            bookingForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.handleBookingSubmit(e);
+            });
+        }
+    }
+
+    // カードクリック設定
+    setupCardClicks() {
+        // 猫カードクリック
+        document.addEventListener('click', (e) => {
+            const catCard = e.target.closest('.cat-card');
+            if (catCard && !catCard.classList.contains('skeleton')) {
+                const catId = catCard.getAttribute('data-cat-id');
+                if (catId) {
+                    this.openCatDetail(catId);
+                }
+            }
+
+            const articleCard = e.target.closest('.article-card');
+            if (articleCard && !articleCard.classList.contains('skeleton')) {
+                const articleId = articleCard.getAttribute('data-article-id');
+                if (articleId) {
+                    this.openArticleDetail(articleId);
+                }
+            }
+
+            const productCard = e.target.closest('.product-card');
+            if (productCard && !productCard.classList.contains('skeleton')) {
+                const productId = productCard.getAttribute('data-product-id');
+                if (productId) {
+                    this.openProductDetail(productId);
+                }
+            }
+        });
+
+        // お気に入りボタン
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.favorite-btn')) {
+                e.stopPropagation();
+                const btn = e.target.closest('.favorite-btn');
+                const catId = parseInt(btn.getAttribute('data-cat-id'));
+                this.toggleFavorite(catId, btn);
+            }
+        });
+    }
+
+    // 検索機能設定
+    setupSearchFunctionality() {
+        const searchBtn = document.querySelector('.search-btn');
+        const searchInput = document.getElementById('search-input');
+        const filters = {
+            breed: document.getElementById('breed-filter'),
+            age: document.getElementById('age-filter'),
+            size: document.getElementById('size-filter')
+        };
+
+        // 検索ボタンクリック
+        searchBtn?.addEventListener('click', () => {
+            this.performSearch();
+        });
+
+        // エンターキーで検索
+        searchInput?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                this.performSearch();
+            }
+        });
+
+        // フィルター変更時に検索
+        Object.values(filters).forEach(filter => {
+            filter?.addEventListener('change', () => {
+                this.performSearch();
+            });
+        });
+    }
+
+    // 言語切り替え設定
+    setupLanguageSwitching() {
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const lang = btn.getAttribute('data-lang');
+                this.switchLanguage(lang);
+                
+                // アクティブ状態更新
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+    }
+
+    // 認証フォーム設定
+    setupAuthForms() {
+        const loginForm = document.getElementById('login-form');
+        const signupForm = document.getElementById('signup-form');
+
+        loginForm?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.handleLogin(e);
+        });
+
+        signupForm?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.handleSignup(e);
+        });
+    }
+
+    // モーダル操作
+    openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'flex';
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+            document.body.style.overflow = '';
+        }
+    }
+
+    closeAllModals() {
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        });
+        document.body.style.overflow = '';
+    }
+
+    // 予約モーダル開く
+    openBookingModal(serviceType) {
+        const modal = document.getElementById('booking-modal');
+        const serviceSelect = document.getElementById('service-type');
+        
+        if (serviceSelect) {
+            serviceSelect.value = serviceType;
+        }
+        
+        this.openModal('booking-modal');
+    }
+
+    // ログイン処理
+    handleLogin(e) {
+        const formData = new FormData(e.target);
+        const email = formData.get('email') || e.target.querySelector('input[type="email"]').value;
+        const password = formData.get('password') || e.target.querySelector('input[type="password"]').value;
+
+        if (!email || !password) {
+            this.showNotification('メールアドレスとパスワードを入力してください。', 'error');
+            return;
+        }
+
+        // ログイン処理（実際のAPIコールに置き換え）
+        setTimeout(() => {
+            const user = window.db.login(email, password);
+            this.currentUser = user;
+            
+            this.closeAllModals();
+            this.showNotification('ログインしました！', 'success');
+            this.updateAuthUI();
+        }, 1000);
+    }
+
+    // 会員登録処理
+    handleSignup(e) {
+        const formData = new FormData(e.target);
+        const name = formData.get('name') || e.target.querySelector('input[type="text"]').value;
+        const email = formData.get('email') || e.target.querySelector('input[type="email"]').value;
+        const password = e.target.querySelectorAll('input[type="password"]')[0].value;
+        const passwordConfirm = e.target.querySelectorAll('input[type="password"]')[1].value;
+        const termsAccepted = e.target.querySelector('input[type="checkbox"]').checked;
+
+        if (!name || !email || !password || !passwordConfirm) {
+            this.showNotification('すべての項目を入力してください。', 'error');
+            return;
+        }
+
+        if (password !== passwordConfirm) {
+            this.showNotification('パスワードが一致しません。', 'error');
+            return;
+        }
+
+        if (!termsAccepted) {
+            this.showNotification('利用規約に同意してください。', 'error');
+            return;
+        }
+
+        // 会員登録処理
+        setTimeout(() => {
+            const user = window.db.login(email, password);
+            this.currentUser = user;
+            
+            this.closeAllModals();
+            this.showNotification('会員登録が完了しました！', 'success');
+            this.updateAuthUI();
+        }, 1000);
+    }
+
+    // 予約処理
+    handleBookingSubmit(e) {
+        const formData = new FormData(e.target);
+        const serviceType = formData.get('service-type') || document.getElementById('service-type').value;
+        const datetime = formData.get('datetime') || e.target.querySelector('input[type="datetime-local"]').value;
+        const catInfo = formData.get('cat-info') || e.target.querySelector('textarea').value;
+        const name = formData.get('name') || e.target.querySelectorAll('input[type="text"]')[1].value;
+        const phone = formData.get('phone') || e.target.querySelector('input[type="tel"]').value;
+
+        if (!serviceType || !datetime || !name || !phone) {
+            this.showNotification('必須項目を入力してください。', 'error');
+            return;
+        }
+
+        // 予約処理
+        const booking = window.db.addBooking(serviceType, datetime, { name, phone }, catInfo);
+        
+        this.closeAllModals();
+        this.showNotification('予約が完了しました！確認メールをお送りします。', 'success');
+        this.createConfettiEffect();
+    }
+
+    // 検索実行
+    performSearch() {
+        const query = document.getElementById('search-input')?.value || '';
+        const filters = {
+            breed: document.getElementById('breed-filter')?.value || '',
+            age: document.getElementById('age-filter')?.value || '',
+            size: document.getElementById('size-filter')?.value || ''
+        };
+
+        const results = window.db.searchCats(query, filters);
+        this.displaySearchResults(results);
+        
+        // 結果セクションにスクロール
+        const resultsSection = document.getElementById('cats-database');
+        if (resultsSection) {
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    // 検索結果表示
+    displaySearchResults(results) {
+        const grid = document.getElementById('cats-grid');
+        if (!grid) return;
+
+        if (results.length === 0) {
+            grid.innerHTML = '<div class="no-results">該当する猫が見つかりませんでした。</div>';
+            return;
+        }
+
+        grid.innerHTML = results.map(cat => this.createCatCard(cat)).join('');
+    }
+
+    // お気に入り切り替え
+    toggleFavorite(catId, btn) {
+        if (!this.currentUser) {
+            this.showNotification('ログインが必要です。', 'info');
+            return;
+        }
+
+        const isFavorite = window.db.toggleFavorite(catId);
+        
+        if (isFavorite) {
+            btn.classList.add('active');
+            btn.innerHTML = '<i class="fas fa-heart"></i>';
+            this.showNotification('お気に入りに追加しました！', 'success');
+        } else {
+            btn.classList.remove('active');
+            btn.innerHTML = '<i class="far fa-heart"></i>';
+            this.showNotification('お気に入りから削除しました。', 'info');
+        }
+    }
+
+    // UI更新
+    updateAuthUI() {
+        const authButtons = document.querySelector('.auth-buttons');
+        if (this.currentUser && authButtons) {
+            authButtons.innerHTML = `
+                <a href="#" class="user-btn" onclick="this.openMyPage()">
+                    <i class="fas fa-user"></i> ${this.currentUser.name}
+                </a>
+                <a href="#" class="logout-btn" onclick="this.logout()">ログアウト</a>
+            `;
+        }
+    }
+
+    // マイページ開く
+    openMyPage() {
+        if (!this.currentUser) {
+            this.showNotification('ログインが必要です。', 'info');
+            return;
+        }
+        this.loadMyPageData();
+        this.openModal('mypage-modal');
+    }
+
+    // マイページデータ読み込み
+    loadMyPageData() {
+        // お気に入り表示
+        const favoritesGrid = document.getElementById('favorites-grid');
+        const favorites = window.db.getFavorites();
+        
+        if (favoritesGrid) {
+            favoritesGrid.innerHTML = favorites.length > 0 
+                ? favorites.map(cat => this.createCatCard(cat, true)).join('')
+                : '<div class="no-data">お気に入りはまだありません。</div>';
+        }
+
+        // 予約履歴表示
+        const bookingsList = document.getElementById('bookings-list');
+        const bookings = window.db.getBookings();
+        
+        if (bookingsList) {
+            bookingsList.innerHTML = bookings.length > 0
+                ? bookings.map(booking => `
+                    <div class="booking-item">
+                        <h4>${booking.serviceType}</h4>
+                        <p>日時: ${new Date(booking.datetime).toLocaleString('ja-JP')}</p>
+                        <p>ステータス: ${booking.status}</p>
+                    </div>
+                  `).join('')
+                : '<div class="no-data">予約履歴はありません。</div>';
+        }
+    }
+
+    // 言語切り替え
+    switchLanguage(lang) {
+        window.db.setLanguage(lang);
+        this.currentLanguage = lang;
+        
+        // ページ内のテキストを更新
+        this.updateLanguageContent();
+        
+        this.showNotification(`言語を${lang === 'ja' ? '日本語' : lang === 'en' ? 'English' : '한국어'}に切り替えました。`, 'info');
+    }
+
+    // 言語コンテンツ更新
+    updateLanguageContent() {
+        // ナビゲーション更新
+        const navItems = document.querySelectorAll('.nav-menu a');
+        const navKeys = ['home', 'database', 'articles', 'products', 'services', 'about', 'contact'];
+        
+        navItems.forEach((item, index) => {
+            if (navKeys[index]) {
+                const text = window.db.translate(`nav.${navKeys[index]}`);
+                if (text !== `nav.${navKeys[index]}`) {
+                    item.textContent = text;
+                }
+            }
+        });
+
+        // ヒーロー更新
+        const heroTitle = document.querySelector('.hero h1');
+        const heroDesc = document.querySelector('.hero p');
+        
+        if (heroTitle) {
+            const title = window.db.translate('hero.title');
+            if (title !== 'hero.title') heroTitle.textContent = title;
+        }
+        
+        if (heroDesc) {
+            const desc = window.db.translate('hero.description');
+            if (desc !== 'hero.description') heroDesc.textContent = desc;
+        }
+    }
+
+    // 詳細ページ系のメソッドは後で実装
+    openCatDetail(catId) {
+        // 猫詳細ページ実装予定
+        this.showNotification('猫の詳細ページを開発中です...', 'info');
+    }
+
+    openArticleDetail(articleId) {
+        // 記事詳細ページ実装予定
+        this.showNotification('記事詳細ページを開発中です...', 'info');
+    }
+
+    openProductDetail(productId) {
+        // 商品詳細ページ実装予定
+        this.showNotification('商品詳細ページを開発中です...', 'info');
+    }
+
+    // ログアウト
+    logout() {
+        window.db.logout();
+        this.currentUser = null;
+        this.updateAuthUI();
+        this.showNotification('ログアウトしました。', 'info');
+        window.location.reload();
+    }
+
+    // データ読み込みメソッド
+    loadCatsData() {
+        const cats = window.db.searchCats('');
+        this.displayCats(cats);
+    }
+
+    loadArticles() {
+        const articles = window.db.getArticles(4);
+        this.displayArticles(articles);
+    }
+
+    loadProducts() {
+        const products = window.db.getProducts();
+        this.displayProducts(products);
+    }
+
+    // 猫カード生成
+    createCatCard(cat, isSmall = false) {
+        const isFavorite = window.db.favorites.includes(cat.id);
+        const cardClass = isSmall ? 'cat-card small' : 'cat-card';
+        
+        return `
+            <div class="${cardClass}" data-cat-id="${cat.id}">
+                <div class="cat-image">
+                    <span class="cat-emoji">${cat.image}</span>
+                    <button class="favorite-btn ${isFavorite ? 'active' : ''}" data-cat-id="${cat.id}">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                </div>
+                <div class="cat-info">
+                    <h3>${cat.name}</h3>
+                    <p class="cat-breed">${cat.breed}</p>
+                    <div class="cat-details">
+                        <span class="detail-item">
+                            <i class="fas fa-weight"></i> ${cat.weight}
+                        </span>
+                        <span class="detail-item">
+                            <i class="fas fa-clock"></i> ${cat.lifespan}
+                        </span>
+                    </div>
+                    <div class="cat-temperament">
+                        ${cat.temperament.map(trait => `<span class="trait-tag">${trait}</span>`).join('')}
+                    </div>
+                    <p class="cat-description">${cat.description.substring(0, 80)}...</p>
+                    <div class="cat-price">${cat.price_range}</div>
+                </div>
+            </div>
+        `;
+    }
+
+    // 記事カード生成
+    createArticleCard(article) {
+        return `
+            <div class="article-card" data-article-id="${article.id}">
+                <div class="article-image">
+                    <span class="article-emoji">${article.image}</span>
+                    ${article.featured ? '<span class="featured-badge">注目</span>' : ''}
+                </div>
+                <div class="article-content">
+                    <div class="article-meta">
+                        <span class="article-category">${article.category}</span>
+                        <span class="article-date">${new Date(article.date).toLocaleDateString('ja-JP')}</span>
+                    </div>
+                    <h3>${article.title}</h3>
+                    <p>${article.excerpt}</p>
+                    <div class="article-footer">
+                        <div class="author-info">
+                            <i class="fas fa-user"></i>
+                            <span>${article.author}</span>
+                        </div>
+                        <div class="read-time">
+                            <i class="fas fa-clock"></i>
+                            <span>${article.readTime}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // 商品カード生成
+    createProductCard(product) {
+        const hasDiscount = product.originalPrice && product.originalPrice > product.price;
+        const discountPercent = hasDiscount ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) : 0;
+        
+        return `
+            <div class="product-card" data-product-id="${product.id}">
+                <div class="product-image">
+                    <span class="product-emoji">${product.image}</span>
+                    ${!product.inStock ? '<span class="stock-badge out-of-stock">在庫切れ</span>' : ''}
+                    ${hasDiscount ? `<span class="discount-badge">${discountPercent}%オフ</span>` : ''}
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">${product.brand}</div>
+                    <h3>${product.name}</h3>
+                    <div class="product-rating">
+                        ${'★'.repeat(Math.floor(product.rating))}${'☆'.repeat(5 - Math.floor(product.rating))}
+                        <span class="rating-text">(${product.reviews}件)</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="current-price">￥${product.price.toLocaleString()}</span>
+                        ${hasDiscount ? `<span class="original-price">￥${product.originalPrice.toLocaleString()}</span>` : ''}
+                    </div>
+                    <div class="product-features">
+                        ${product.features.slice(0, 2).map(feature => `<span class="feature-tag">${feature}</span>`).join('')}
+                    </div>
+                    <div class="product-shipping">${product.shipping}</div>
+                    <button class="btn-primary add-to-cart ${!product.inStock ? 'disabled' : ''}" 
+                            ${!product.inStock ? 'disabled' : ''}>
+                        ${product.inStock ? 'カートに追加' : '在庫切れ'}
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    // 表示メソッド
+    displayCats(cats) {
+        const grid = document.getElementById('cats-grid');
+        if (!grid) return;
+
+        if (cats.length === 0) {
+            grid.innerHTML = '<div class="no-results">猫のデータがありません。</div>';
+            return;
+        }
+
+        grid.innerHTML = cats.map(cat => this.createCatCard(cat)).join('');
+    }
+
+    displayArticles(articles) {
+        const grid = document.getElementById('articles-grid');
+        if (!grid) return;
+
+        if (articles.length === 0) {
+            grid.innerHTML = '<div class="no-results">記事がありません。</div>';
+            return;
+        }
+
+        grid.innerHTML = articles.map(article => this.createArticleCard(article)).join('');
+    }
+
+    displayProducts(products) {
+        const grid = document.getElementById('products-grid');
+        if (!grid) return;
+
+        if (products.length === 0) {
+            grid.innerHTML = '<div class="no-results">商品がありません。</div>';
+            return;
+        }
+
+        grid.innerHTML = products.map(product => this.createProductCard(product)).join('');
+    }
+
+    // マイページタブ設定
+    setupMyPageTabs() {
+        document.addEventListener('click', (e) => {
+            const tabBtn = e.target.closest('.tab-btn');
+            if (tabBtn) {
+                const tabName = tabBtn.getAttribute('data-tab');
+                this.switchMyPageTab(tabName);
+            }
+        });
+    }
+
+    // マイページタブ切り替え
+    switchMyPageTab(tabName) {
+        // タブボタンのアクティブ状態更新
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelector(`.tab-btn[data-tab="${tabName}"]`)?.classList.add('active');
+
+        // タブコンテンツの切り替え
+        document.querySelectorAll('.tab-pane').forEach(pane => {
+            pane.classList.remove('active');
+        });
+        document.getElementById(`${tabName}-tab`)?.classList.add('active');
     }
 }
 
