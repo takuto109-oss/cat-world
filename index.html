@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ニャンコ・ワールド - 猫の総合情報サイト</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+JP:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -41,14 +41,38 @@
                    猫の飼育方法、健康管理、おすすめグッズまで、<br>
                    あなたの猫ライフをサポートします。</p>
                 <div class="hero-buttons">
-                    <button class="btn-primary">今すぐ始める</button>
-                    <button class="btn-secondary">詳細を見る</button>
+                    <button class="btn-primary">
+                        <span class="btn-text">今すぐ始める</span>
+                        <span class="btn-icon"><i class="fas fa-arrow-right"></i></span>
+                    </button>
+                    <button class="btn-secondary">
+                        <span class="btn-text">詳細を見る</span>
+                        <span class="btn-icon"><i class="fas fa-play"></i></span>
+                    </button>
                 </div>
             </div>
             <div class="hero-image">
-                <div class="cat-placeholder">
-                    <i class="fas fa-cat"></i>
-                    <p>かわいい猫の写真</p>
+                <div class="hero-visual">
+                    <div class="floating-elements">
+                        <div class="floating-card card-1">
+                            <i class="fas fa-heart"></i>
+                            <span>愛情</span>
+                        </div>
+                        <div class="floating-card card-2">
+                            <i class="fas fa-paw"></i>
+                            <span>ケア</span>
+                        </div>
+                        <div class="floating-card card-3">
+                            <i class="fas fa-star"></i>
+                            <span>品質</span>
+                        </div>
+                    </div>
+                    <div class="hero-cat-container">
+                        <div class="cat-silhouette">
+                            <i class="fas fa-cat"></i>
+                        </div>
+                        <div class="glow-effect"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -131,9 +155,38 @@
                     </ul>
                 </div>
                 <div class="about-image">
-                    <div class="cat-team-placeholder">
-                        <i class="fas fa-users"></i>
-                        <p>チーム写真</p>
+                    <div class="about-visual">
+                        <div class="team-grid">
+                            <div class="team-member">
+                                <div class="member-avatar">
+                                    <i class="fas fa-user-md"></i>
+                                </div>
+                                <span>獣医師</span>
+                            </div>
+                            <div class="team-member">
+                                <div class="member-avatar">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <span>行動学者</span>
+                            </div>
+                            <div class="team-member">
+                                <div class="member-avatar">
+                                    <i class="fas fa-pen-fancy"></i>
+                                </div>
+                                <span>ライター</span>
+                            </div>
+                            <div class="team-member">
+                                <div class="member-avatar">
+                                    <i class="fas fa-camera"></i>
+                                </div>
+                                <span>写真家</span>
+                            </div>
+                        </div>
+                        <div class="expertise-badges">
+                            <div class="badge">専門知識</div>
+                            <div class="badge">実践経験</div>
+                            <div class="badge">科学的根拠</div>
+                        </div>
                     </div>
                 </div>
             </div>
